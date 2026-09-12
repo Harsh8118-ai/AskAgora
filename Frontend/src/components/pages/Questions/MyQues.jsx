@@ -88,7 +88,7 @@ const MyQues = ({ userId }) => {
       await axios.delete(`http://localhost:5000/api/ques/${userId}/${questionId}`);
       setQuestions(questions.filter((q) => question._id !== questionId));
     } catch (error) {
-      console.error("Error deleting question:", error);
+      console.error("Error deleting question:", error);  
     }
   };
 

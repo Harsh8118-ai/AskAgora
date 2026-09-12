@@ -3,31 +3,35 @@ import { fontFamily } from "tailwindcss/defaultTheme";
 import plugin from "tailwindcss/plugin";
 
 export default {
-  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx,css}"
+  ],
   theme: {
     extend: {
-      boxShadow: {
-        "button-glow": "var(--button-shadow)", // Dynamic button shadow
-      },
-      
       colors: {
-        primary: "var(--primary-color)", // Dynamic primary color
-        primary2: "var(--primary-2-color)", // Dynamic secondary shade
-        background: "var(--background-color)", // Dynamic background color
-        text: "var(--text-color)", // Dynamic text color
-        
-        background: "hsl(var(--background))", // Add this line
-    foreground: "hsl(var(--foreground))", // Ensure foreground is also added
 
-    primary_home: {
-      DEFAULT: "hsl(var(--primary))",
-      foreground: "hsl(var(--primary-foreground))",
-    },
-    secondary: {
-      DEFAULT: "hsl(var(--secondary))",
-      foreground: "hsl(var(--secondary-foreground))",
-    },
-    
+        borderColor: {
+          border: "hsl(var(--border))",
+        },
+        border: "hsl(var(--border))",
+        primary: "var(--primary-color)",
+        primary2: "var(--primary-2-color)",
+        background: "var(--background-color)",
+        text: "var(--text-color)",
+
+        background: "hsl(var(--background))",
+        foreground: "hsl(var(--foreground))",
+
+        primary_home: {
+          DEFAULT: "hsl(var(--primary))",
+          foreground: "hsl(var(--primary-foreground))",
+        },
+        secondary: {
+          DEFAULT: "hsl(var(--secondary))",
+          foreground: "hsl(var(--secondary-foreground))",
+        },
+
         color: {
           1: "#AC6AFF",
           2: "#FFC876",
@@ -54,9 +58,17 @@ export default {
           12: "#2E2A41",
           13: "#6C7275",
         },
-        border: "hsl(var(--border))", // Added this line to fix border-border issue
+
       },
-     
+
+      boxShadow: {
+        "button-glow": "var(--button-shadow)",
+      },
+
+      borderColor: {
+        border: "hsl(var(--border))",
+      },
+
       fontFamily: {
         sans: ["var(--font-sora)", ...fontFamily.sans],
         code: "var(--font-code)",

@@ -27,7 +27,7 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: process.env.NODE_ENV === "production"
-      ? ["https://silkenglamour.com", "https://www.silkenglamour.com", "https://silken-glamour.vercel.app", "https://silkenglamour.netlify.app"]
+      ? ["https://aksagora.netlify.app", "https://silkenglamour.com", "https://www.silkenglamour.com", "https://silken-glamour.vercel.app", "https://silkenglamour.netlify.app"]
       : ["http://localhost:5173", "https://aksagora.netlify.app", "http://192.168.111.15:5173"],
     methods: ["GET", "POST"],
     credentials: true,
@@ -77,9 +77,15 @@ app.use((error, req, res, next) => {
 // ✅ Connect to Database & Start Server
 connectDb().then(() => {
   const PORT = process.env.PORT || 5000;
-  const HOST = '0.0.0.0'; // <-- This allows external devices to connect
 
-  server.listen(PORT, HOST, () => {
-    console.log(`🚀 Server is running at http://${HOST}:${PORT}`);
+  // <-- This allows external devices to connect
+  // const HOST = '0.0.0.0'; 
+  // server.listen(PORT, HOST () => {
+  //   console.log(`🚀 Server is running at http://${HOST}:${PORT}`);
+  // });
+  // <-- This allows external devices to connect
+
+  server.listen(PORT, () => {
+    console.log(`🚀 Server is running at ${PORT}`);
   });
 });
