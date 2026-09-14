@@ -16,12 +16,12 @@ const Chat = () => {
     const [clickedMsgId, setClickedMsgId] = useState(null); // For timestamp toggle
 
     const userId = localStorage.getItem("userId");
-    const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+    const BASE_URL = import.meta.env.VITE_WEB_SOCKET_URL;
 
 
     // ✅ Initialize Socket.io connection
     useEffect(() => {
-        const newSocket = io("http://localhost:5000");
+        const newSocket = io(`${BASE_URL}`);    
         setSocket(newSocket);
         return () => newSocket.disconnect();
     }, []);

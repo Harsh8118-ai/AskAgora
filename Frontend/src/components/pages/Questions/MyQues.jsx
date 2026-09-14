@@ -11,6 +11,7 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+console.log(BASE_URL)
 
 
 const MyQues = ({ userId }) => {
@@ -75,7 +76,7 @@ const MyQues = ({ userId }) => {
   // Edit a question
   const handleEdit = async (questionId, updatedData) => {
     try {
-      await axios.put(`http://localhost:5000/api/ques/${userId}/${questionId}`, updatedData);
+      await axios.put(`${BASE_URL}/ques/${userId}/${questionId}`, updatedData);
       fetchQuestions();
     } catch (error) {
       console.error("Error editing question:", error);
@@ -85,7 +86,7 @@ const MyQues = ({ userId }) => {
   // Delete a question
   const handleDelete = async (questionId) => {
     try {
-      await axios.delete(`http://localhost:5000/api/ques/${userId}/${questionId}`);
+      await axios.delete(`${BASE_URL}/ques/${userId}/${questionId}`);
       setQuestions(questions.filter((q) => question._id !== questionId));
     } catch (error) {
       console.error("Error deleting question:", error);  
@@ -95,7 +96,7 @@ const MyQues = ({ userId }) => {
   // Like a question
   const handleLike = async (questionId) => {
     try {
-      await axios.post(`http://localhost:5000/api/ques/${questionId}/like`, { userId });
+      await axios.post(`${BASE_URL}/ques/${questionId}/like`, { userId });
       fetchQuestions();
     } catch (error) {
       console.error("Error liking question:", error);
@@ -105,7 +106,7 @@ const MyQues = ({ userId }) => {
   // Toggle visibility
   const handleToggleVisibility = async (questionId, currentStatus) => {
     try {
-      await axios.put(`http://localhost:5000/api/ques/${userId}/${questionId}/toggle-visibility`);
+      await axios.put(`${BASE_URL}/ques/${userId}/${questionId}/toggle-visibility`);
       fetchQuestions();
     } catch (error) {
       console.error("Error toggling visibility:", error);
