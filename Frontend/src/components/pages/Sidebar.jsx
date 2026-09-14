@@ -37,7 +37,7 @@ export function Sidebar() {
         </button>
 
         {/* 🔥 Sidebar Heading */}
-        <h2 className="text-xl font-bold mb-4 pb-3 border-b border-gray-400">Learning Go</h2>
+        <h2 className="text-xl font-bold mb-4 pb-3 border-b border-gray-400">Ask Agora</h2>
 
         {/* Navigation Links */}
         <nav className="space-y-2 flex-1">
