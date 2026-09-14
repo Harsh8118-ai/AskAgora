@@ -23,10 +23,10 @@ router.get(
   passport.authenticate("github", { failureRedirect: "/login" }),
   (req, res) => {
     if (!req.user) {
-      return res.redirect(`${CLIENT_URL}?error=Authentication Failed`);
+      return res.redirect(`${CLIENT_URL}/auth-success?error=Authentication Failed`);
     }
     const token = generateToken(req.user);
-    res.redirect(`${CLIENT_URL}?token=${token}&username=${req.user.username}`);
+    res.redirect(`${CLIENT_URL}/auth-success?token=${token}&username=${req.user.username}`);
   }
 );
 
@@ -38,10 +38,10 @@ router.get(
   passport.authenticate("google", { failureRedirect: "/login" }),
   (req, res) => {
     if (!req.user) {
-      return res.redirect(`${CLIENT_URL}?error=Authentication Failed`);
+      return res.redirect(`${CLIENT_URL}/auth-success?error=Authentication Failed`);
     }
     const token = generateToken(req.user);
-    res.redirect(`${CLIENT_URL}?token=${token}&username=${req.user.username}`);
+    res.redirect(`${CLIENT_URL}/auth-success?token=${token}&username=${req.user.username}`);
   }
 );
 
