@@ -27,9 +27,9 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: process.env.NODE_ENV === "production"
-      ? ["https://aksagora.netlify.app"]
-      : ["http://localhost:5173", "https://aksagora.netlify.app"],
-    methods: ["GET", "POST"],
+      ? ["https://askagora.netlify.app"]
+      : ["http://localhost:5173", "https://askagora.netlify.app"],
+    methods: ["GET", "POST", "PUT", "DELETE", "UPDATE"],
     credentials: true,
   },
 });

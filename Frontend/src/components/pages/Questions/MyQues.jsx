@@ -11,8 +11,6 @@ import AOS from "aos";
 import "aos/dist/aos.css";
 
 const BASE_URL = import.meta.env.VITE_BACKEND_URL;
-console.log(BASE_URL)
-
 
 const MyQues = ({ userId }) => {
   const [questions, setQuestions] = useState([]);
