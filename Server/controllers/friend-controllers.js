@@ -9,8 +9,6 @@ exports.sendFriendRequest = async (req, res) => {
     const { inviteCode } = req.body;
     const senderId = req.user.id;
 
-    console.log("📌 Received Friend Request - Invite Code:", inviteCode);
-    console.log("📌 Sender ID:", senderId);
 
     if (!inviteCode) {
       console.error("❌ Invite Code Missing!");
@@ -25,7 +23,6 @@ exports.sendFriendRequest = async (req, res) => {
     }
 
     const recipient = recipientFriend.userId;
-    console.log("📌 Recipient ID:", recipient._id.toString());
 
     if (senderId === recipient._id.toString()) {
       console.error("❌ Sender is trying to send request to themselves!");
@@ -44,8 +41,6 @@ exports.sendFriendRequest = async (req, res) => {
       { new: true, upsert: true }
     );
 
-    console.log("📌 Sender Friend Data:", senderFriend);
-    console.log("📌 Recipient Friend Data:", recipientFriendData);
 
     // ✅ Ensure requestsSent and friends exist
     if (!Array.isArray(senderFriend.requestsSent)) senderFriend.requestsSent = [];
@@ -68,7 +63,6 @@ exports.sendFriendRequest = async (req, res) => {
     await senderFriend.save();
     await recipientFriendData.save();
 
-    console.log("✅ Friend request sent successfully!");
     res.status(200).json({ message: "Friend request sent successfully!" });
   } catch (error) {
     console.error("❌ Server Error in sendFriendRequest:", error);
@@ -86,8 +80,6 @@ exports.respondToFriendRequest = async (req, res) => {
       return res.status(400).json({ message: "Missing senderId, receiverId, or action." });
     }
 
-    console.log("📩 Processing request:", { senderId: _id, receiverId });
-
     // ✅ Find receiver's Friend document
     const receiver = await Friend.findOne({ userId: receiverId });
     if (!receiver) return res.status(404).json({ message: "Receiver not found!" });
@@ -103,7 +95,6 @@ exports.respondToFriendRequest = async (req, res) => {
     sender.requestsSent = sender.requestsSent || [];
 
     if (action === "accept") {
-      console.log("✅ Friend request accepted! Updating friend lists...");
 
       // ✅ Add sender to receiver's friend list (only if not already there)
       if (!receiver.friends.some(friend => friend.userId.equals(_id))) {
@@ -124,7 +115,6 @@ exports.respondToFriendRequest = async (req, res) => {
     await receiver.save();
     await sender.save();
 
-    console.log("✅ Friend request successfully processed.");
     return res.status(200).json({ message: `Friend request ${action}ed successfully!` });
 
   } catch (error) {
@@ -319,8 +309,6 @@ exports.removeFriend = async (req, res) => {
       return res.status(400).json({ message: "Friend ID is required!" });
     }
 
-    console.log("📌 Remove Friend - User ID:", userId);
-    console.log("📌 Friend ID:", _id);
 
     // ✅ Find the friend documents
     let userFriend = await Friend.findOne({ userId });
@@ -344,7 +332,6 @@ exports.removeFriend = async (req, res) => {
     await userFriend.save();
     await targetFriend.save();
 
-    console.log("✅ Friend removed successfully!");
     res.status(200).json({ message: "Friend removed successfully!" });
 
   } catch (error) {

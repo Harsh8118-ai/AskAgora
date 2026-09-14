@@ -5,7 +5,6 @@ const mongoose = require("mongoose");
 // Create or Add a Question (User can also provide an answer while posting)
 const createQuestion = async (req, res) => {
   try {
-    console.log("Received Data:", req.body);
 
     const { userId, username, questions } = req.body;
 
@@ -59,12 +58,10 @@ const getAllQuestions = async (req, res) => {
 // Like a question
 const likeQuestion = async (req, res) => {
   try {
-    console.log("🔹 Received Like Request for Question ID:", req.params.questionId);
 
     const { questionId } = req.params;
     const { userId } = req.body;
 
-    console.log("🔹 User ID:", userId);
 
     if (!userId) {
       console.error("❌ Unauthorized: No user ID provided");
@@ -74,7 +71,6 @@ const likeQuestion = async (req, res) => {
     // Find the document that contains this question
     const questionDoc = await Question.findOne({ "questions._id": questionId });
 
-    console.log("🔍 Fetched Question Document:", questionDoc);
 
     if (!questionDoc) {
       console.error("❌ Question document not found for ID:", questionId);
@@ -84,7 +80,6 @@ const likeQuestion = async (req, res) => {
     // Extract the specific question
     const question = questionDoc.questions.find(q => q._id.toString() === questionId);
 
-    console.log("🔍 Extracted Question:", question);
 
     if (!question) {
       console.error("❌ Question not found inside document:", questionId);
@@ -93,14 +88,12 @@ const likeQuestion = async (req, res) => {
 
     const isLiked = question.likes.includes(userId);
 
-    console.log("👍 Is Liked Already:", isLiked);
 
     // Update using $[elem] to target the right question inside the array
     const updateQuery = isLiked
       ? { $pull: { "questions.$[elem].likes": userId } }
       : { $addToSet: { "questions.$[elem].likes": userId } };
 
-    console.log("🔄 Update Query:", updateQuery);
 
     const updatedDoc = await Question.findOneAndUpdate(
       { "questions._id": questionId },
@@ -111,7 +104,6 @@ const likeQuestion = async (req, res) => {
       }
     );
 
-    console.log("✅ Updated Document:", updatedDoc);
 
     if (!updatedDoc) {
       console.error("❌ Failed to update like status");
@@ -121,7 +113,6 @@ const likeQuestion = async (req, res) => {
     // Get the updated likes count
     const updatedLikes = updatedDoc.questions.find(q => q._id.toString() === questionId).likes.length;
 
-    console.log("🎉 Updated Likes Count:", updatedLikes);
 
     res.json({ message: "Like updated", likes: updatedLikes });
 

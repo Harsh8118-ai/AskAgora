@@ -22,9 +22,6 @@ const home = async (req, res) => {
 // ✅ **User Registration (Manual Signup)**
 const register = async (req, res, next) => {
   try {
-    console.log("📩 Received Request Body:", JSON.stringify(req.body, null, 2));
-
-
     const { username, email, mobileNumber, password, otp } = req.body;
 
     if (!username || !email || !mobileNumber || !password || !otp) {
@@ -33,12 +30,6 @@ const register = async (req, res, next) => {
 
     // ✅ Check if OTP is valid
     const otpRecord = await OTP.findOne({ email: email.toLowerCase() });
-    console.log("🔍 OTP Found in DB:", otpRecord);
-
-
-    console.log("DB OTP:", otpRecord?.otp);
-    console.log("User OTP:", otp);
-
 
     if (!otpRecord || otpRecord.otp.toString() !== otp.toString()) {
       return res.status(400).json({ message: "Invalid or expired OTP." });
@@ -85,18 +76,15 @@ const login = async (req, res, next) => {
     // Fix: Ensure password is selected
     const user = await User.findOne({ mobileNumber }).select("+password");
     if (!user) {
-      console.log("⚠️ User not found:", mobileNumber);
       return res.status(400).json({ message: "Invalid Mobile Number or Password" });
     }
 
     // Fix: Password comparison
     const isMatch = await user.comparePassword(password);
     if (!isMatch) {
-      console.log("❌ Incorrect password for user:", mobileNumber);
       return res.status(400).json({ message: "Invalid Mobile Number or Password" });
     }
 
-    console.log("✅ Login successful for user:", mobileNumber);
 
     const token = generateToken(user._id);
 
@@ -205,45 +193,32 @@ const resetPassword = async (req, res) => {
   const { email, newPassword, otp } = req.body;
 
   try {
-    console.log("🔹 Reset Password Request Received");
-    console.log("📧 Email:", email);
-    console.log("🔢 OTP:", otp);
-    console.log("🔒 New Password:", newPassword);
 
     // ✅ Check if OTP exists
     const otpRecord = await OTP.findOne({ email, otp });
-    console.log("🔎 OTP Record Found:", otpRecord);
 
     if (!otpRecord) {
-      console.log("❌ Invalid OTP.");
       return res.status(400).json({ message: "Invalid OTP." });
     }
 
     // ✅ Check OTP expiration
     if (new Date(otpRecord.expiresAt) < new Date()) {
-      console.log("⏳ OTP has expired. Deleting OTP record...");
       await OTP.deleteOne({ _id: otpRecord._id }); // Remove expired OTP
       return res.status(400).json({ message: "OTP has expired. Please request a new one." });
     }
 
     // ✅ Hash new password
-    console.log("🔐 Hashing new password...");
     const hashedPassword = await bcrypt.hash(newPassword, 10);
-    console.log("✅ Password hashed successfully");
 
     // ✅ Update user password
-    console.log("🔄 Updating user password in the database...");
     const userUpdate = await User.findOneAndUpdate({ email }, { password: hashedPassword }, { new: true });
 
     if (!userUpdate) {
-      console.log("❌ No user found with this email.");
       return res.status(404).json({ message: "User not found." });
     }
 
-    console.log("✅ Password updated successfully for:", userUpdate.email);
 
     // ✅ Delete OTP after password reset
-    console.log("🗑 Deleting OTP record...");
     await OTP.deleteOne({ _id: otpRecord._id });
 
     res.status(200).json({ message: "Password updated successfully!" });

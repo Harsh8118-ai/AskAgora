@@ -169,7 +169,6 @@ const PublicQues = () => {
       const updatedQuestions = await Promise.all(
         questions.map(async (q) => {
           const answerResponse = await fetch(`${BASE_URL}/ques/${q._id}/answer`);
-          console.log(q._id)
           if (!answerResponse.ok) throw new Error(`Failed to fetch answers for ${q._id}`);
   
           const answerData = await answerResponse.json();
