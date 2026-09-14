@@ -31,7 +31,7 @@
     "multer": "^2.0.2",
     "next": "^15.4.5",
     "next-auth": "^4.24.11",
-    "nodemailer": "^7.0.5",
+    "nodemailer": "^6.10.1",
     "nodeman": "^1.1.2",
     "nodemon": "^3.1.10",
     "otp-generator": "^4.0.1",
