@@ -4,7 +4,7 @@ const passport = require("passport");
 const jwt = require("jsonwebtoken");
 const { oauthLogin, updateUsername } = require("../controllers/oauth-controllers");
 
-const CLIENT_URL = "http://localhost:5173/auth-success";
+const CLIENT_URL = process.env.FRONTEND_URL
 
 // 🔹 Token Generator Function
 const generateToken = (user) => {
