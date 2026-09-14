@@ -1,4 +1,5 @@
 const { Schema, model } = require("mongoose");
+const crypto = require("crypto");
 
 const answerSchema = new Schema(
   {
@@ -11,13 +12,14 @@ const answerSchema = new Schema(
 
 const questionSchema = new Schema(
   {
+    _id: { type: String, default: () => crypto.randomUUID() },
     question: { type: String, required: true },
     tags: { type: [String], default: [] },
     likes: { type: [Schema.Types.ObjectId], ref: "User", default: [] },
     isPublic: { type: Boolean, default: true },
     answers: [answerSchema],
   },
-  { timestamps: true } 
+  { timestamps: true }
 );
 
 const userQuestionSchema = new Schema(

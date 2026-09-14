@@ -45,6 +45,8 @@ const TrendingQues = () => {
                 }
 
                 const data = await response.json();
+
+                console.log("Data received from backend:", data);
                 
 
                 // Ensure each question has the correct data structure
@@ -131,6 +133,7 @@ const TrendingQues = () => {
             const updatedQuestions = await Promise.all(
                 questions.map(async (q) => {
                     const answerResponse = await fetch(`${BASE_URL}/ques/${q._id}/answer`);
+                    console.log(q._id)
                     const answerData = await answerResponse.json();
                     return { ...q, answers: answerData.answers?.length || 0, answer: answerData.answers || [] };
                 })

@@ -27,8 +27,8 @@ const server = http.createServer(app);
 const io = new Server(server, {
   cors: {
     origin: process.env.NODE_ENV === "production"
-      ? ["https://aksagora.netlify.app", "https://silkenglamour.com", "https://www.silkenglamour.com", "https://silken-glamour.vercel.app", "https://silkenglamour.netlify.app"]
-      : ["http://localhost:5173", "https://aksagora.netlify.app", "http://192.168.111.15:5173"],
+      ? ["https://aksagora.netlify.app"]
+      : ["http://localhost:5173", "https://aksagora.netlify.app"],
     methods: ["GET", "POST"],
     credentials: true,
   },

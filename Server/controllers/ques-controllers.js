@@ -9,7 +9,7 @@ const createQuestion = async (req, res) => {
 
     const { userId, username, questions } = req.body;
 
-    if (!userId || !questions || questions.length === 0 || !questions[0].question ) {
+    if (!userId || !questions || questions.length === 0 || !questions[0].question) {
       return res.status(400).json({ message: "UserId, Question, and Answer are required!" });
     }
 
@@ -65,7 +65,7 @@ const likeQuestion = async (req, res) => {
     const { userId } = req.body;
 
     console.log("🔹 User ID:", userId);
-    
+
     if (!userId) {
       console.error("❌ Unauthorized: No user ID provided");
       return res.status(401).json({ message: "Unauthorized: Please log in" });
@@ -83,7 +83,7 @@ const likeQuestion = async (req, res) => {
 
     // Extract the specific question
     const question = questionDoc.questions.find(q => q._id.toString() === questionId);
-    
+
     console.log("🔍 Extracted Question:", question);
 
     if (!question) {
@@ -92,7 +92,7 @@ const likeQuestion = async (req, res) => {
     }
 
     const isLiked = question.likes.includes(userId);
-    
+
     console.log("👍 Is Liked Already:", isLiked);
 
     // Update using $[elem] to target the right question inside the array
@@ -105,7 +105,7 @@ const likeQuestion = async (req, res) => {
     const updatedDoc = await Question.findOneAndUpdate(
       { "questions._id": questionId },
       updateQuery,
-      { 
+      {
         new: true,
         arrayFilters: [{ "elem._id": questionId }]
       }
@@ -268,12 +268,12 @@ const deleteQuestion = async (req, res) => {
 const getTrendingQuestions = async (req, res) => {
   try {
     const questions = await Question.aggregate([
-      { $unwind: "$questions" }, 
-      { $match: { "questions.isPublic": true } }, 
-      { $sort: { "questions.likes": -1 } }, 
-      { $limit: 10 }, 
+      { $unwind: "$questions" },
+      { $match: { "questions.isPublic": true } },
+      { $sort: { "questions.likes": -1 } },
+      { $limit: 10 },
       {
-        $project: { 
+        $project: {
           _id: "$questions._id",
           question: "$questions.question",
           answer: "$questions.answer",
@@ -316,27 +316,37 @@ const getAnswers = async (req, res) => {
   try {
     const { questionId } = req.params;
 
-    // ✅ Ensure `questionId` is converted to ObjectId correctly
-    const objectId = new mongoose.Types.ObjectId(questionId);
-
-    // ✅ Find the document that contains the question inside `questions` array
-    const parentDoc = await Question.findOne({ "questions._id": objectId });
+    const parentDoc = await Question.findOne({
+      "questions._id": questionId
+    });
 
     if (!parentDoc) {
-      return res.status(404).json({ message: "Question not found" });
+      return res.status(404).json({
+        message: "Question not found"
+      });
     }
 
-    // ✅ Extract the specific question from the array
-    const question = parentDoc.questions.find(q => q._id.equals(objectId));
+    const question = parentDoc.questions.find(
+      q => q._id === questionId
+    );
 
     if (!question) {
-      return res.status(404).json({ message: "Question not found" });
+      return res.status(404).json({
+        message: "Question not found"
+      });
     }
 
-    res.json({ answers: question.answers || [] });
+    return res.status(200).json({
+      answers: question.answers || []
+    });
+
   } catch (error) {
-    console.error("Error fetching answers:", error.message);
-    res.status(500).json({ message: "Error fetching answers", error: error.message });
+    console.error("Error fetching answers:", error);
+
+    return res.status(500).json({
+      message: "Error fetching answers",
+      error: error.message
+    });
   }
 };
 
