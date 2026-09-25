@@ -57,7 +57,7 @@ const TrendingQues = () => {
 
                 setTrendingQuestions(formattedData);
                 fetchAnswersCount(formattedData);
-                setLoading(false);      
+                setLoading(false);         
 
             } catch (error) {
                 console.error("Error fetching trending questions:", error);
